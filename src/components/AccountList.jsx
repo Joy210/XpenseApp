@@ -89,12 +89,10 @@ export const AccountList = () => {
           {cities &&
             cities.map((data, i) => {
               return (
-                <>
-                  <tr key={i}>
-                    <td>{data.name}</td>
-                    <td>{data.amount}</td>
-                  </tr>
-                </>
+                <tr key={i}>
+                  <td className="text-uppercase">{data.name}</td>
+                  <td>{data.amount}</td>
+                </tr>
               );
             })}
         </tbody>
