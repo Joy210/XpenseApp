@@ -149,7 +149,7 @@ export const AccountList = () => {
         </div>
       </div>
 
-      <div className="row">
+      <div className="row mt-3">
         <div className="col">
           <AddTransaction
             accounts={accounts}
