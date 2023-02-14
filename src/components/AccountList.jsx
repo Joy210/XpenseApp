@@ -17,10 +17,12 @@ import AddTransaction from "./AddTransaction";
 export const AccountList = () => {
   const [accounts, setAccounts] = useState([]);
   const [categories, setCategories] = useState([]);
+  const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
     getAccounts();
     getCategory();
+    getTransactions();
   }, []);
 
   const getAccounts = async () => {
@@ -41,6 +43,26 @@ export const AccountList = () => {
       console.log(error);
     }
   };
+
+  const getTransactions = async () => {
+    const list = [];
+
+    try {
+      const querySnap = await getDocs(collection(db, "transactions"));
+      querySnap.forEach((res) => {
+        list.push(res.data());
+      });
+
+      if (list.length !== 0) {
+        setTransactions(list);
+      } else {
+        console.log("No data found!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const getCategory = async () => {
     const list = [];
 
@@ -78,37 +100,6 @@ export const AccountList = () => {
 
     console.log(res);
     // return res;
-  };
-
-  // console.log(test);
-
-  const [category, setCategory] = useState([]);
-  const [inputValue, setInputValue] = useState();
-  let selctedOptionId = 0;
-
-  const handleChange = (e) => {
-    let name = e.target.name;
-    let value = e.target.value;
-
-    setInputValue({ [name]: value });
-  };
-
-  let selectHandler = (e) => {
-    setCategory(e.target.value);
-  };
-
-  const addCategoryHandler = async (e) => {
-    e.preventDefault();
-
-    // setCategory({ name: inputValue });
-
-    // const data = await addDoc(collection(db, "categories"), {
-    //   id: Date.now(),
-    //   name: inputValue,
-    //   timeStamp: serverTimestamp(),
-    // });
-
-    console.log(inputValue);
   };
 
   return (
@@ -160,7 +151,11 @@ export const AccountList = () => {
 
       <div className="row">
         <div className="col">
-          <AddTransaction accounts={accounts} categories={categories} />
+          <AddTransaction
+            accounts={accounts}
+            categories={categories}
+            transactions={transactions}
+          />
         </div>
         <div className="col">
           <AddCategory />

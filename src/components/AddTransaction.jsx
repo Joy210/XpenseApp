@@ -2,7 +2,7 @@ import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 import React, { useState } from "react";
 import { db } from "../firebase-config";
 
-const AddTransaction = ({ accounts, categories }) => {
+const AddTransaction = ({ accounts, categories, transactions }) => {
   const [values, setValues] = useState({
     transactionType: "EXPENSE",
     amount: 0,
@@ -65,7 +65,7 @@ const AddTransaction = ({ accounts, categories }) => {
       option2 !== ""
     ) {
       // save data into firebase
-      const data = await addDoc(collection(db, "transactions"), obj);
+      // const data = await addDoc(collection(db, "transactions"), obj);
 
       console.log("Transaction Saved Successfully");
     } else {
@@ -111,7 +111,9 @@ const AddTransaction = ({ accounts, categories }) => {
                     Transfer
                   </label>
                 </div>
+
                 <hr />
+
                 <div className="mb-3">
                   <label htmlFor="" className="form-label">
                     Amount
@@ -123,6 +125,7 @@ const AddTransaction = ({ accounts, categories }) => {
                     onChange={handleInputChange}
                   />
                 </div>
+
                 <div className="mb-3">
                   <label htmlFor="" className="form-label">
                     Note
@@ -134,6 +137,7 @@ const AddTransaction = ({ accounts, categories }) => {
                     onChange={handleInputChange}
                   />
                 </div>
+
                 <div className="mb-3">
                   <label htmlFor="" className="form-label">
                     {values.transactionType === "EXPENSE"
@@ -161,7 +165,34 @@ const AddTransaction = ({ accounts, categories }) => {
                       })}
                   </select>
                 </div>
-                {values.transactionType === "EXPENSE" && (
+
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label">
+                    Test
+                  </label>
+
+                  <select
+                    className="form-select text-capitalize mb-3"
+                    name="option3"
+                    onChange={handleInputChange}
+                    defaultValue={"DEFAULT"}
+                  >
+                    <option value="DEFAULT" disabled>
+                      Select
+                    </option>
+
+                    {accounts &&
+                      accounts.map((data, i) => {
+                        return (
+                          <option value={data.value} key={i}>
+                            {data.name}
+                          </option>
+                        );
+                      })}
+                  </select>
+                </div>
+
+                {/* {values.transactionType === "EXPENSE" && (
                   <div className="mb-3">
                     <label htmlFor="" className="form-label">
                       Category
@@ -187,7 +218,7 @@ const AddTransaction = ({ accounts, categories }) => {
                         })}
                     </select>
                   </div>
-                )}
+                )} */}
 
                 {/* {values.transactionType === "TRANSFER" && (
                   <div className="mb-3">
