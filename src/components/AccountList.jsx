@@ -10,6 +10,7 @@ import React, { useEffect, useState } from "react";
 import { db } from "../firebase-config";
 import AddAccounts from "./AddAccounts";
 import AddCategory from "./AddCategory";
+import AddTransaction from "./AddTransaction";
 
 // import AccountDataService from "../services/account.services";
 
@@ -159,125 +160,18 @@ export const AccountList = () => {
 
       <div className="row">
         <div className="col">
-          <div className="card">
-            <div className="card-header">Add Transaction</div>
-            <div className="card-body">
-              <form>
-                {/* <div className="form-check form-check-inline">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault1"
-                  />
-                  <label
-                    className="form-check-label"
-                    htmlFor="flexRadioDefault1"
-                  >
-                    Expense
-                  </label>
-                </div>
-
-                <div className="form-check form-check-inline">
-                  <input
-                    className="form-check-input"
-                    type="radio"
-                    name="flexRadioDefault"
-                    id="flexRadioDefault2"
-                    checked
-                  />
-                  <label
-                    className="form-check-label"
-                    htmlFor="flexRadioDefault2"
-                  >
-                    Transfer
-                  </label>
-                </div> */}
-
-                <hr />
-
-                <div className="mb-3">
-                  <label htmlFor="" className="form-label">
-                    Amount
-                  </label>
-                  <input type="number" className="form-control" id="number" />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="" className="form-label">
-                    Note
-                  </label>
-                  <input type="text" className="form-control" id="note" />
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="" className="form-label">
-                    Bank {"accounts"}
-                  </label>
-
-                  <select
-                    className="form-select text-capitalize mb-3"
-                    aria-label="Default select example"
-                    onChange={selectHandler}
-                    defaultValue={"DEFAULT"}
-                  >
-                    <option value="DEFAULT" disabled>
-                      Select
-                    </option>
-
-                    {accounts &&
-                      accounts.map((data, i) => {
-                        return (
-                          <option value={i} key={i}>
-                            {data.name}
-                          </option>
-                        );
-                      })}
-                  </select>
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="" className="form-label">
-                    Category {category}
-                  </label>
-
-                  <select
-                    className="form-select text-capitalize mb-3"
-                    aria-label="Default select example"
-                    onChange={selectHandler}
-                    defaultValue={"DEFAULT"}
-                  >
-                    <option value="DEFAULT" disabled>
-                      Select
-                    </option>
-
-                    {categories &&
-                      categories.map((data, i) => {
-                        return (
-                          <option value={i} key={i}>
-                            {data.name}
-                          </option>
-                        );
-                      })}
-                  </select>
-                </div>
-
-                <button type="submit" className="btn btn-primary">
-                  Submit
-                </button>
-              </form>
-            </div>
-          </div>
+          <AddTransaction accounts={accounts} categories={categories} />
         </div>
         <div className="col">
           <AddCategory />
         </div>
       </div>
 
-      <form onSubmit={handleSubmit}>
+      {/* <form onSubmit={handleSubmit}>
         <button className="btn btn-primary mt-5" type="submit">
           Save Data
         </button>
-      </form>
+      </form> */}
     </div>
   );
 };

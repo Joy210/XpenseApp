@@ -23,6 +23,7 @@ const AddAccounts = () => {
     const obj = {
       id: Date.now(),
       name: values.bankName,
+      value: values.bankName.replace(" ", "_").toUpperCase(),
       amount: parseInt(values.bankAmount),
       timeStamp: serverTimestamp(),
     };

@@ -7,6 +7,8 @@ const AddCategory = () => {
     name: "",
   });
 
+  const test = values.name;
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -22,6 +24,7 @@ const AddCategory = () => {
     const obj = {
       id: Date.now(),
       name: values.name,
+      value: values.name.replace(" ", "_").toUpperCase(),
       timeStamp: serverTimestamp(),
     };
 
@@ -52,7 +55,7 @@ const AddCategory = () => {
                     className="form-control"
                     name="name"
                     onChange={handleInputChange}
-                    // value={values.bankName}
+                    // value={values.name}
                   />
                 </div>
 
