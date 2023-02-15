@@ -105,13 +105,18 @@ const AddTransaction = ({ accounts, categories, transactions }) => {
                   <label htmlFor="" className="form-label">
                     Amount
                   </label>
-                  <input
-                    type="number"
-                    className="form-control"
-                    name="amount"
-                    onChange={handleInputChange}
-                    // value={inputValues.amount}
-                  />
+                  <div className="input-group">
+                    <input
+                      type="number"
+                      className="form-control"
+                      name="amount"
+                      onChange={handleInputChange}
+                      // value={inputValues.amount}
+                    />
+                    <span className="input-group-text bg-white text-muted fw-bold">
+                      BDT
+                    </span>
+                  </div>
                 </div>
 
                 <div className="mb-3">
