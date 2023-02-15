@@ -25,6 +25,7 @@ export const AccountList = () => {
     getTransactions();
   }, []);
 
+  // fetched Account List from database
   const getAccounts = async () => {
     const list = [];
 
@@ -44,6 +45,7 @@ export const AccountList = () => {
     }
   };
 
+  // fetched Transaction List from database
   const getTransactions = async () => {
     const list = [];
 
@@ -63,6 +65,7 @@ export const AccountList = () => {
     }
   };
 
+  // fetched Category List from database
   const getCategory = async () => {
     const list = [];
 
@@ -80,19 +83,6 @@ export const AccountList = () => {
     } catch (error) {
       console.log(error);
     }
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    const data = await addDoc(collection(db, "accounts"), {
-      id: Date.now(),
-      name: "scb bank 1",
-      amount: 12000,
-      timeStamp: serverTimestamp(),
-    });
-
-    console.log("Data Submited", data);
   };
 
   const getTotalAmount = () => {
@@ -161,12 +151,6 @@ export const AccountList = () => {
           <AddCategory />
         </div>
       </div>
-
-      {/* <form onSubmit={handleSubmit}>
-        <button className="btn btn-primary mt-5" type="submit">
-          Save Data
-        </button>
-      </form> */}
     </div>
   );
 };

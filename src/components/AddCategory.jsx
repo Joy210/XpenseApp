@@ -7,8 +7,6 @@ const AddCategory = () => {
     name: "",
   });
 
-  const test = values.name;
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
 
@@ -32,7 +30,7 @@ const AddCategory = () => {
       // save data into firebase
       const data = await addDoc(collection(db, "categories"), obj);
 
-      console.log("Category Saved Successfully");
+      console.log("Category Saved Successfully", data);
     } else {
       console.log("Empty");
     }

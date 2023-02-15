@@ -32,7 +32,7 @@ const AddAccounts = () => {
       // save data into firebase
       const data = await addDoc(collection(db, "accounts"), obj);
 
-      console.log("Account Saved Successfully");
+      console.log("Account Saved Successfully", data);
     } else {
       console.log("Empty");
     }
