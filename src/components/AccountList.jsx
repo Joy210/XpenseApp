@@ -93,51 +93,29 @@ export const AccountList = () => {
   };
 
   return (
-    <div>
-      <span>Account Lists</span>
-      <hr />
-      <div className="row">
-        <div className="col">
-          <table className="table table-bordered">
-            <thead>
-              <tr className="bg-warning">
-                <th>Total Amount</th>
-                <th>
-                  {accounts
-                    ? accounts.reduce(
-                        (total, currentValue) => (total += currentValue.amount),
-                        0
-                      )
-                    : "No Data Found!"}
-                </th>
-              </tr>
-            </thead>
-          </table>
+    <div className="py-5">
+      <h4>Account Lists</h4>
 
-          <table className="table table-bordered table-striped">
-            <thead>
-              <tr className="bg-secondary text-white">
-                <th>Bank Name</th>
-                <th>Amount</th>
-              </tr>
-            </thead>
-            <tbody>
-              {accounts &&
-                accounts.map((data, i) => {
-                  return (
-                    <tr key={i}>
-                      <td className="text-uppercase">{data.name}</td>
-                      <td>{data.amount}</td>
-                    </tr>
-                  );
-                })}
-            </tbody>
-          </table>
-        </div>
-        <div className="col">
-          <AddAccounts />
-        </div>
-      </div>
+      <table className="table table-bordered table-striped">
+        <thead>
+          <tr className="bg-secondary text-white">
+            <th>Bank Name</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {accounts &&
+            accounts.map((data, i) => {
+              return (
+                <tr key={i}>
+                  <td className="text-uppercase">{data.name}</td>
+                  <td>{data.amount}</td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </table>
 
       <div className="row mt-3">
         <div className="col">
@@ -149,6 +127,8 @@ export const AccountList = () => {
         </div>
         <div className="col">
           <AddCategory />
+          <br />
+          <AddAccounts />
         </div>
       </div>
     </div>
