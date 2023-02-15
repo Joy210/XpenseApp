@@ -1,6 +1,5 @@
 import React from "react";
 import { AccountList } from "./AccountList";
-import Navbar from "./Navbar";
 
 const Home = () => {
   return (
