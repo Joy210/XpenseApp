@@ -5,7 +5,10 @@ import App from './App';
 
 import { BrowserRouter } from 'react-router-dom'
 
+// bootstrap fo styling
 import "bootstrap/dist/css/bootstrap.min.css";
+
+// require('dotenv').config()
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
