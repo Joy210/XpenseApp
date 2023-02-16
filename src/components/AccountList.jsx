@@ -118,14 +118,14 @@ export const AccountList = () => {
       </table>
 
       <div className="row mt-3">
-        <div className="col">
+        <div className="col col-sm-12">
           <AddTransaction
             accounts={accounts}
             categories={categories}
             transactions={transactions}
           />
         </div>
-        <div className="col">
+        <div className="col col-sm-12">
           <AddCategory />
           <br />
           <AddAccounts />
