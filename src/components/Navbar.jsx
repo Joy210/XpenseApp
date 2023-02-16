@@ -18,8 +18,8 @@ const Navbar = () => {
               </li>
 
               <li className="nav-item">
-                <Link to={"/add_transaction"} className="nav-link ">
-                  Add Transaction
+                <Link to={"/add_account"} className="nav-link ">
+                  Add Account
                 </Link>
               </li>
 
