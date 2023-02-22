@@ -1,89 +1,20 @@
 /* eslint-disable no-unused-vars */
-import { async } from "@firebase/util";
-import {
-  addDoc,
-  collection,
-  getDocs,
-  serverTimestamp,
-} from "firebase/firestore";
 import React, { useEffect, useState } from "react";
-import { db } from "../firebase-config";
-import AddAccounts from "./AddAccounts";
-import AddCategory from "./AddCategory";
-import AddTransaction from "./AddTransaction";
+import { fetchData } from "../utils/getAccoutns";
 
 // import AccountDataService from "../services/account.services";
 
-export const AccountList = () => {
+export const AccountList = (props) => {
   const [accounts, setAccounts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [transactions, setTransactions] = useState([]);
 
   useEffect(() => {
-    getAccounts();
-    getCategory();
-    getTransactions();
+    fetchData('accounts').then(data => setAccounts(data));
+    fetchData('categories').then(data => setCategories(data));
+    fetchData('transactions').then(data => setTransactions(data));
   }, []);
 
-  // fetched Account List from database
-  const getAccounts = async () => {
-    const list = [];
-
-    try {
-      const querySnap = await getDocs(collection(db, "accounts"));
-      querySnap.forEach((res) => {
-        list.push(res.data());
-      });
-
-      if (list.length !== 0) {
-        setAccounts(list);
-      } else {
-        console.log("No data found!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // fetched Transaction List from database
-  const getTransactions = async () => {
-    const list = [];
-
-    try {
-      const querySnap = await getDocs(collection(db, "transactions"));
-      querySnap.forEach((res) => {
-        list.push(res.data());
-      });
-
-      if (list.length !== 0) {
-        setTransactions(list);
-      } else {
-        console.log("No data found!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // fetched Category List from database
-  const getCategory = async () => {
-    const list = [];
-
-    try {
-      const querySnap = await getDocs(collection(db, "categories"));
-      querySnap.forEach((res) => {
-        list.push(res.data());
-      });
-
-      if (list.length !== 0) {
-        setCategories(list);
-      } else {
-        console.log("No data found!");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const getTotalAmount = () => {
     const res = accounts.reduce((a, v) => (a = a + v.amount), 0);
@@ -117,7 +48,60 @@ export const AccountList = () => {
         </tbody>
       </table>
 
-      <div className="row mt-3">
+      <br />
+
+      <h4>Transaction Lists</h4>
+      <table className="table table-bordered table-striped">
+        <thead>
+          <tr className="bg-secondary text-white">
+            <th>From</th>
+            <th>To</th>
+            <th>Type</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          {transactions &&
+            transactions.map((data, i) => {
+              return (
+                <tr key={i}>
+                  <td className="text-uppercase">{data.fromAcc}</td>
+                  <td className="text-uppercase">{data.selectOption}</td>
+                  <td className="text-uppercase">{data.trnxType}</td>
+                  <td>{data.amount}</td>
+                </tr>
+              );
+            })}
+        </tbody>
+      </table>
+
+      <br />
+
+      <h4>Category Lists</h4>
+      <table className="table table-bordered table-striped">
+        <thead>
+          <tr className="bg-secondary text-white">
+            <th>Category Name</th>
+
+          </tr>
+        </thead>
+
+        <tbody>
+          {categories &&
+            categories.map((data, i) => {
+              return (
+                <tr key={i}>
+                  <td className="text-uppercase">{data.name}</td>
+
+                </tr>
+              );
+            })}
+        </tbody>
+      </table>
+
+
+      {/* <div className="row mt-3">
         <div className="col-lg-6 col-sm-12">
           <AddTransaction
             accounts={accounts}
@@ -131,7 +115,7 @@ export const AccountList = () => {
           <br />
           <AddAccounts />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

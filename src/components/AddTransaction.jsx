@@ -1,8 +1,15 @@
 import { addDoc, collection, serverTimestamp } from "firebase/firestore";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { db } from "../firebase-config";
+import { fetchData } from "../utils/getAccoutns";
 
-const AddTransaction = ({ accounts, categories, transactions }) => {
+const AddTransaction = () => {
+  let history = useNavigate();
+
+  const [accounts, setAccounts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  
   const [inputValues, setInputValues] = useState({
     trnxType: "EXPENSE",
     amount: "",
@@ -10,6 +17,12 @@ const AddTransaction = ({ accounts, categories, transactions }) => {
     fromAcc: "",
     selectOption: "",
   });
+
+
+  useEffect(() => {
+    fetchData('accounts').then(data => setAccounts(data));
+    fetchData('categories').then(data => setCategories(data));
+  }, []);
 
   const handleInputChange = (e) => {
     const { name, value } = e.currentTarget;
@@ -58,6 +71,7 @@ const AddTransaction = ({ accounts, categories, transactions }) => {
     }
 
     e.target.reset();
+    history('/');
 
     // console.log("Data: ", obj);
   };
@@ -100,37 +114,6 @@ const AddTransaction = ({ accounts, categories, transactions }) => {
                 </div>
 
                 <hr />
-
-                <div className="mb-3">
-                  <label htmlFor="" className="form-label">
-                    Amount
-                  </label>
-                  <div className="input-group">
-                    <input
-                      type="number"
-                      className="form-control"
-                      name="amount"
-                      onChange={handleInputChange}
-                      // value={inputValues.amount}
-                    />
-                    <span className="input-group-text bg-white text-muted fw-bold">
-                      BDT
-                    </span>
-                  </div>
-                </div>
-
-                <div className="mb-3">
-                  <label htmlFor="" className="form-label">
-                    Note
-                  </label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="note"
-                    onChange={handleInputChange}
-                    // value={inputValues.note}
-                  />
-                </div>
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label">
@@ -222,6 +205,39 @@ const AddTransaction = ({ accounts, categories, transactions }) => {
                     </select>
                   </div>
                 )}
+
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label">
+                    Amount
+                  </label>
+                  <div className="input-group">
+                    <input
+                      type="number"
+                      className="form-control"
+                      name="amount"
+                      onChange={handleInputChange}
+                      // value={inputValues.amount}
+                    />
+                    <span className="input-group-text bg-white text-muted fw-bold">
+                      BDT
+                    </span>
+                  </div>
+                </div>
+
+                <div className="mb-3">
+                  <label htmlFor="" className="form-label">
+                    Note
+                  </label>
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="note"
+                    onChange={handleInputChange}
+                    // value={inputValues.note}
+                  />
+                </div>
+
+                
 
                 <button type="submit" className="btn btn-primary">
                   Submit

@@ -9,6 +9,7 @@ const Navbar = () => {
           <Link className="navbar-brand fw-bold" to={"/"}>
             Expense Tracker
           </Link>
+          
           <div className="">
             <ul className="navbar-nav flex-row gap-4">
               <li className="nav-item">
