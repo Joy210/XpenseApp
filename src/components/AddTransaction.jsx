@@ -1,27 +1,27 @@
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import { serverTimestamp } from "firebase/firestore";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { db } from "../firebase-config";
-import { fetchData } from "../utils/fetchData";
+import AccountDataService from "../services/AaccountDataServices";
+import CategoryDataServices from "../services/CategoryDataServices";
+import TransactionDataServices from "../services/TransactionDataServices";
 
 const AddTransaction = () => {
   let history = useNavigate();
 
   const [accounts, setAccounts] = useState([]);
   const [categories, setCategories] = useState([]);
-  
+
   const [inputValues, setInputValues] = useState({
     trnxType: "EXPENSE",
-    amount: "",
+    amount: 0,
     note: "",
     fromAcc: "",
     selectOption: "",
   });
 
-
   useEffect(() => {
-    fetchData('accounts').then(data => setAccounts(data));
-    fetchData('categories').then(data => setCategories(data));
+    getAccounts();
+    getCategories();
   }, []);
 
   const handleInputChange = (e) => {
@@ -33,20 +33,53 @@ const AddTransaction = () => {
     });
   };
 
-  // console.log(inputValues);
-
   const onRadioChange = (e) => {
     setInputValues({
       [e.target.name]: e.currentTarget.value,
     });
   };
 
+  const getAccounts = async () => {
+    const data = await AccountDataService.getAllAccounts();
+    setAccounts(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
+
+  const getCategories = async () => {
+    const data = await CategoryDataServices.getAllCategories();
+    setCategories(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+  };
+
+  // console.log(accounts, categories)
+
+  const updateAccount = async () => {
+    const currAmount = accounts.filter(
+      (acc) => acc.value === inputValues.fromAcc
+    );
+    const sentTo = accounts.filter(
+      (acc) => acc.value === inputValues.selectOption
+    );
+
+    await AccountDataService.updateAccount(currAmount[0].id, {
+      amount: parseInt(currAmount[0].amount) - parseInt(inputValues.amount),
+      timeStamp: serverTimestamp(),
+    });
+
+    if (inputValues.trnxType === "TRANSFER") {
+      await AccountDataService.updateAccount(sentTo[0].id, {
+        amount: parseInt(sentTo[0].amount) + parseInt(inputValues.amount),
+        timeStamp: serverTimestamp(),
+      });
+    }
+  };
+
+  // console.log(inputValues.trnxType)
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const { trnxType, amount, note, fromAcc, selectOption } = inputValues;
 
     let obj = {
-      id: Date.now(),
       trnxType,
       amount: parseInt(amount),
       note,
@@ -58,22 +91,22 @@ const AddTransaction = () => {
     if (
       trnxType !== "" &&
       amount !== "" &&
-      note !== "" &&
       fromAcc !== "" &&
       selectOption !== ""
     ) {
-      // save data into firebase
-      const data = await addDoc(collection(db, "transactions"), obj);
+      // updated account list table on database
+      updateAccount();
 
-      console.log("Transaction Saved Successfully", data);
+      // save data into firebase
+      TransactionDataServices.addTransaction(obj);
+
+      history("/");
+      console.log("Transaction Saved Successfully");
     } else {
       console.log("Empty");
     }
 
     e.target.reset();
-    history('/');
-
-    // console.log("Data: ", obj);
   };
 
   return (
@@ -136,8 +169,12 @@ const AddTransaction = () => {
                     {accounts &&
                       accounts.map((data, i) => {
                         return (
-                          <option value={data.value} key={i}>
-                            {data.name} - {'BDT ' + data.amount}
+                          <option
+                            value={data.value}
+                            key={i}
+                            disabled={data.amount < 0}
+                          >
+                            {data.name} - {"BDT " + data.amount}
                           </option>
                         );
                       })}
@@ -198,7 +235,7 @@ const AddTransaction = () => {
                               key={i}
                               hidden={inputValues.fromAcc === data.value}
                             >
-                              {data.name}
+                              {data.name} - {"BDT " + data.amount}
                             </option>
                           );
                         })}
@@ -226,7 +263,7 @@ const AddTransaction = () => {
 
                 <div className="mb-3">
                   <label htmlFor="" className="form-label">
-                    Note
+                    Note <span className="text-muted">(Optional)</span>
                   </label>
                   <input
                     type="text"
@@ -236,8 +273,6 @@ const AddTransaction = () => {
                     // value={inputValues.note}
                   />
                 </div>
-
-                
 
                 <button type="submit" className="btn btn-primary">
                   Submit
